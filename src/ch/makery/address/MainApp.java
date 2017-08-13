@@ -1,7 +1,9 @@
 package ch.makery.address;/**
  * Created by Dominik on 12.08.2017.
  */
+import java.io.File;
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 import ch.makery.address.model.Person;
 import ch.makery.address.view.PersonEditDialogController;
@@ -121,5 +123,26 @@ public class MainApp extends Application {
         }
     }
 
+    public File getPersonFilePath() {
+        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+        String filePath = prefs.get("filePath", null);
+        if (filePath != null) {
+            return new File(filePath);
+        } else {
+            return null;
+        }
 
+    }
+
+    public void setPersonFilePath(File file) {
+        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+        if (file != null) {
+            prefs.put("filePath", file.getPath());
+            primaryStage.setTitle("AddressApp - " + file.getName());
+        } else {
+            prefs.remove("filePath");
+            primaryStage.setTitle("AddressApp");
+        }
+
+    }
 }
